@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-primary" role="alert" style="padding: 20px;">
+            {{msg}}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
+
+<h1>Hello you are in SupportDisplay</h1>
+
+
+
+<br><br>
+<b>&nbsp;&nbsp;Your complaint.</b>
+<div class="input-group input-group-lg" style="padding: 5%;height: 20rem;">
+    <textarea class="form-control" aria-label="With textarea" name="content" placeholder="{{content[0][0]}}" readonly></textarea>
+</div>
+<br>
+<b>&nbsp;&nbsp;Employee reply:</b>
+<div class="input-group input-group-lg" style="padding: 5%;height: 20rem;">
+    <textarea class="form-control" aria-label="With textarea" name="reply" placeholder="{{content[0][1]}}"readonly></textarea>
+</div>
+&nbsp;&nbsp;&nbsp;
+<a class="btn btn-primary" href="ticketsupport">Back</a>
+
+{% endblock %}

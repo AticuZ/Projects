@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block emp_body %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for msg in messages %}
+<div class="alert alert-primary" role="alert" style="padding: 20px;">
+    {{msg}}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<h1>Welcome {{UserData[1]}} to your Profile. This Year you already flew {{UserData[8]}} Miles with DataAirlines.</h1>
+
+
+<form action="profile" method="POST" style="padding: 2.5%;">
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="inputUID">UserName</label>
+        <input type="text" class="form-control" id="inputUID" name="inputUID" value="{{UserData[0]}}" readonly>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="inputPassword"> New Password</label>
+        <input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder="Enter new Password here">
+     </div>
+     <div class="form-group col-md-3">
+        <label for="inputPassword"> Old Password</label>
+        <input type="password" class="form-control" id="OldPassword" name="OldPassword" required>
+     </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="inputFirstName">First Name</label>
+        <input type="text" class="form-control" id="inputFirstName" name="inputFirstName" value="{{UserData[1]}}">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="inputLastName">Last Name</label>
+        <input type="text" class="form-control" id="inputLastName" name="inputLastName" value="{{UserData[2]}}">
+
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="inputEmail">Email</label>
+            <input type="email" class="form-control" id="inputEmail" name="inputEmail" value="{{UserData[4]}}" >
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputTel">Telephone Number</label>
+            <input type="number" class="form-control" id="inputTel" name="inputTel" value="{{UserData[5]}}">
+        </div>
+    
+        <div class="form-groupcol-md-3">
+            <label for="inputAddress">Address</label>
+            <input type="text" class="form-control" id="inputAddress" name="inputAddress" value="{{UserData[6]}}" >
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputBirthday">Birthday</label>
+            <input type="date" class="form-control" id="inputBirthday"  name="inputBirthday" value="{{UserData[3]}}">
+        </div>
+        <div class="form-group col-md-3">
+        <label for="inputIBAN">IBAN</label>
+        <input type="text" class="form-control" id="inputIBAN"  name="inputIBAN" value="{{UserData[7]}}">
+        </div>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+{% endblock %}

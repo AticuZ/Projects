@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-primary" role="alert" style="padding: 20px;">
+            {{msg}}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+{% if content[8] == "0" %}
+    <h1>Reservation Details</h1>
+{% else%}
+    <h1>Booking Details</h1>
+{% endif %}
+
+<div class="form-row" style="margin-left: 20px;" >
+      <div class="form-group col-md-10">
+          <table class="table">
+              <thead class="thead-info">
+                <tr>
+                  <th scope="col">From</th>
+                  <th scope="col">To</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Miles</th>
+                  <th scope="col">Luggage</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Departure Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <form action="flight={{content[0]}}" method="POST" >
+                    <tr>
+                        <td> 
+                            <label class="form-control">{{content[1]}}</label>
+                        </td>
+                        <td> 
+                            <label class="form-control">{{content[2]}}</label>
+                        </td>
+                        <td> 
+                            <input type="hidden" name="Price" value="{{content[3]}}">
+                            <label class="form-control"  >{{content[3]}}€</label>
+                        </td>
+                        <td> 
+                            <input type="hidden" name="Miles" value="{{content[4]}}">
+                            <label class="form-control" >{{content[4]}}</label>
+                        </td>
+                        <td>
+                            <input type="hidden" name="Luggage" value="{{content[5]}}">
+                            <label class="form-control">{{content[5]}}kg</label>
+                        </td>
+                        <td>
+                            <input type="hidden" name="type" value="{{content[6]}}">
+                            <label class="form-control">
+                                {% if content[6] == "E" %}
+                                    Economy
+                                {% elif content[6] == "B" %}
+                                    Business
+                                {% else %}
+                                    First Class
+                                {% endif %}
+                            </label>
+                        </td>
+                        <td>
+                            <input type="hidden" name="DepartureTime" value="{{content[7]}}">
+                            <label class="form-control" >{{content[7]}}</label>
+                        </td>
+                    </tr>
+              </tbody>
+            </table>         
+    </div>
+  </div>
+
+  &nbsp; &nbsp; &nbsp; Extra Luggage:
+<select class="custom-select col-3" id="ExtraLuggage" name="ExtraLuggage" style="margin-left: 20px;" >
+    <option selected value="0">+0kg</option>
+    <option value="5">+5kg for 20€</option>
+    <option value="10">+10kg for 35€</option>
+</select>
+
+<br> <br> 
+
+{% if content[9] == 1 %}
+    &nbsp; &nbsp; &nbsp;You have a Seat Upgrade available! Fly one class higher without paying more!
+        <label class="btn btn-primary active" style="margin-left: 20px;">
+        <input type="checkbox" name="SeatUpgrade" value="on" checked> Seat Upgrade
+        </label>
+{% else %}
+    <input type="hidden" name="SeatUpgrade" value="off">
+{% endif %}
+
+<br> <br> 
+<input type="hidden" name="FCID" value="{{content[0]}}">
+<input type="hidden" name="isbuy" value="{{content[8]}}">
+<button class="btn btn-primary my-2 my-sm-0" type="submit"  style="margin-left: 20px;" >Confirm</button>
+</form>
+<a class="btn btn-primary my-2 my-sm-0" href="flight={{content[0]}}" >Back</a> 
+{% endblock %}

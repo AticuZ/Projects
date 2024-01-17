@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block emp_body %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for msg in messages %}
+<div class="alert alert-primary" role="alert" style="padding: 20px;">
+    {{msg}}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<h1>Decide which places are connected and which places are abandoned.</h1>
+
+
+<div class="form-row" style="padding: 2%;">
+    <div class="card col-md-2" style="height:25rem;" >
+        <form action="flightcodes" method="post">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="formControlRange">From</label>
+              <select class="custom-select" id="From" name="From">
+                <option selected></option>
+                {% for x in SearchOptionsFROM %}
+                  <option>{{x[0]}}</option>
+                {% endfor %}
+              </select>  
+            </div>
+            <div class="form-group col-md-6">
+              <label for="formControlRange">To</label>
+              <select class="custom-select" id="To" name="To">
+                <option selected></option>
+                {% for x in SearchOptionsTO %}
+                  <option>{{x[0]}}</option>
+                {% endfor %}
+              </select> 
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="formControlRange">Flightcode</label>
+              <select class="custom-select" id="Flightcode" name="Flightcode">
+                <option selected></option>
+                {% for x in SearchOptionsFlightcode %}
+                  <option>{{x[0]}}</option>
+                {% endfor %}
+              </select>  
+            </div>
+            <div class="form-group col-md-6">
+              <label for="formControlRange">Aircraft</label>
+              <select class="custom-select" id="Aircraft" name="Aircraft">
+                <option selected></option>
+                {% for x in SearchOptionsAircraft %}
+                  <option>{{x[0]}}</option>
+                {% endfor %}
+              </select> 
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="formControlRange">MinPrice in € (Economy)</label>
+              <input type="text" class="form-control" id="MinPrice" name="MinPrice">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="formControlRange">MaxPrice in € (Economy)</label>
+              <input type="text" class="form-control" id="MaxPrice" name="MaxPrice">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="formControlRange">MinTime</label>
+              <input type="time" class="form-control" id="MinTime" name="MinTime">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="formControlRange">MaxTime</label>
+              <input type="time" class="form-control" id="MaxTime" name="MaxTime">
+            </div>
+          </div>
+    
+          <section style="margin-left: 20%;">
+            <button class="btn btn-primary" type="submit" name="Search" value="Search">Search</button>
+            <a class="btn btn-primary" href="flightcodes">Reset Filter</a>
+          </section>
+        </form> 
+      </div>
+    <div class="form-group col-md-10">
+        <table class="table">
+            <thead class="thead-info">
+                <tr>
+                    <th scope="col">Flightcode</th>
+                    <th scope="col">Aircraft</th>
+                    <th scope="col">Price Economy in €</th>
+                    <th scope="col">Price Business in €</th>
+                    <th scope="col">Price First Class in €</th>
+                    <th scope="col">Miles Economy</th>
+                    <th scope="col">Miles Business</th>
+                    <th scope="col">Miles First Class</th>
+                    <th scope="col">Scheduled Departure Time</th>
+                    <th scope="col">Weekday</th>
+                    <th scope="col">Flight Duration in min</th>
+                    <th scope="col">Departure Airport</th>
+                    <th scope="col">Arrival Airport</th>
+                </tr>
+            </thead>
+            <tbody>
+                <form action="flightcodes" method="POST">
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" name="FCName" id="FCName">
+                        </td>
+                        <td>
+                          <select class="custom-select" name="ACName" id="ACName">
+                            {% for x in SearchOptionsAircraft %}
+                              {% if flightcodeList[2] == x[0] %}
+                                <option selected>{{x[0]}}</option>
+                              {% else %}
+                                <option>{{x[0]}}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                      </td>
+                        <td>
+                            <input type="text" class="form-control" name="Price_E" id="Price_E">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Price_B" id="Price_B">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Price_F" id="Price_F">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Miles_E" id="Miles_E">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Miles_B" id="Miles_B">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Miles_F" id="Miles_F">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="ScheduledDepartureTime"
+                                id="ScheduledDepartureTime">
+                        </td>
+                        <td>
+                          <select class="custom-select" id="DayWeek" name="DayWeek">
+                            <option value="0" selected >Monday</option>
+                            <option value="1">Tuesday</option>
+                            <option value="2">Wednesday</option>
+                            <option value="3">Thursday</option>
+                            <option value="4">Friday</option>
+                            <option value="5">Saturday</option>
+                            <option value="6">Sunday</option>
+                          </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="FlightDuration" id="FlightDuration">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="DepartureAirport" id="DepartureAirport">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="ArrivalAirport" id="ArrivalAirport">
+                        </td>
+                        <td>
+                            <input type="hidden" name="Search" value="Insert">
+                            <button class="btn btn-primary my-2 my-sm-0" type="submit" name="FCID" value="">Insert or Edit</button>
+                        </td>
+                    </tr>
+                </form>
+                {%for f in flightcodeList %}
+                <form action="flightcodes" method="POST">
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" name="FCName" id="FCName" value="{{f[1]}}">
+                        </td>
+                        <td>
+                            <select class="custom-select" name="ACName" id="ACName">
+                              {% for x in SearchOptionsAircraft %}
+                                {% if f[2] == x[0] %}
+                                  <option selected>{{x[0]}}</option>
+                                {% else %}
+                                  <option>{{x[0]}}</option>
+                                {% endif %}
+                              {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Price_E" id="Price_E" value="{{f[3]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Price_B" id="Price_B" value="{{f[4]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Price_F" id="Price_F" value="{{f[5]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Miles_E" id="Miles_E" value="{{f[6]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Miles_B" id="Miles_B" value="{{f[7]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Miles_F" id="Miles_F" value="{{f[8]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="ScheduledDepartureTime"
+                                id="ScheduledDepartureTime" value="{{f[9]}}">
+                        </td>
+                        <td>
+                          {%if f[10] == "0" %}
+                            <select class="custom-select" id="DayWeek" name="DayWeek">
+                              <option value="0" selected >Monday</option>
+                              <option value="1">Tuesday</option>
+                              <option value="2">Wednesday</option>
+                              <option value="3">Thursday</option>
+                              <option value="4">Friday</option>
+                              <option value="5">Saturday</option>
+                              <option value="6">Sunday</option>
+                            </select>
+                          {% elif f[10] == "1"%}
+                            <select class="custom-select" id="DayWeek" name="DayWeek">
+                              <option value="0">Monday</option>
+                              <option value="1" selected>Tuesday</option>
+                              <option value="2">Wednesday</option>
+                              <option value="3">Thursday</option>
+                              <option value="4">Friday</option>
+                              <option value="5">Saturday</option>
+                              <option value="6">Sunday</option>
+                            </select>
+                          {% elif f[10] == "2"%}
+                            <select class="custom-select" id="DayWeek" name="DayWeek">
+                              <option value="0" >Monday</option>
+                              <option value="1">Tuesday</option>
+                              <option value="2"  selected>Wednesday</option>
+                              <option value="3">Thursday</option>
+                              <option value="4">Friday</option>
+                              <option value="5">Saturday</option>
+                              <option value="6">Sunday</option>
+                            </select>
+                          {% elif f[10] == "3"%}
+                            <select class="custom-select" id="DayWeek" name="DayWeek">
+                              <option value="0">Monday</option>
+                              <option value="1">Tuesday</option>
+                              <option value="2">Wednesday</option>
+                              <option value="3" selected>Thursday</option>
+                              <option value="4">Friday</option>
+                              <option value="5">Saturday</option>
+                              <option value="6">Sunday</option>
+                            </select>
+                          {% elif f[10] == "4"%}
+                            <select class="custom-select" id="DayWeek" name="DayWeek">
+                              <option value="0">Monday</option>
+                              <option value="1">Tuesday</option>
+                              <option value="2">Wednesday</option>
+                              <option value="3">Thursday</option>
+                              <option value="4" selected>Friday</option>
+                              <option value="5">Saturday</option>
+                              <option value="6">Sunday</option>
+                            </select>
+                          {% elif f[10] == "5"%}
+                            <select class="custom-select" id="DayWeek" name="DayWeek">
+                              <option value="0">Monday</option>
+                              <option value="1">Tuesday</option>
+                              <option value="2">Wednesday</option>
+                              <option value="3">Thursday</option>
+                              <option value="4">Friday</option>
+                              <option value="5" selected >Saturday</option>
+                              <option value="6">Sunday</option>
+                            </select>
+                          {% elif f[10] == "6"%}
+                            <select class="custom-select" id="DayWeek" name="DayWeek">
+                              <option value="0" >Monday</option>
+                              <option value="1">Tuesday</option>
+                              <option value="2">Wednesday</option>
+                              <option value="3">Thursday</option>
+                              <option value="4">Friday</option>
+                              <option value="5">Saturday</option>
+                              <option value="6" selected >Sunday</option>
+                            </select>
+                          {% else %}
+                            Ups
+                          {% endif %}
+
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="FlightDuration" id="FlightDuration"
+                                value="{{f[11]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="DepartureAirport" id="DepartureAirport"
+                                value="{{f[12]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="ArrivalAirport" id="ArrivalAirport"
+                                value="{{f[13]}}">
+                        </td>
+                        <td>
+                            <div class="card form-col-md">
+                                <input type="hidden" name="Search" value="Update">
+                                <button class="btn btn-primary my-2 my-sm-0" type="submit"  name="FCID" value="{{f[0]}}">Edit</button>
+                                <a class="btn btn-primary my-2 my-sm-0" href="flightcodes">Reset</a>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

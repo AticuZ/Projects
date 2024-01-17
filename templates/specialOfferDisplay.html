@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-primary" role="alert" style="padding: 20px;">
+            {{msg}}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<h1>Take advantage of our kind Special Offer.</h1>
+
+
+
+<div class="row" style="padding: 2%;">
+    <div class="col-2">
+      <div class="list-group" id="list-tab" role="tablist">
+        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Economy</a>
+        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Business</a>
+        <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">First Class</a>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+            {% if flights_economy %}
+            <form action="ticketconfirmation" method="POST">
+                <input type="hidden" id="FCID" name="FCID" value="{{FCID}}">
+                <input type="hidden" id="type" name="type" value="E">
+                <input type="hidden" id="SeatUpgrade" name="SeatUpgrade" value="{{SeatUpgrade}}">
+                <input type="hidden" id="Price" name="Price" value="{{flightcode_details[0]}}">
+                <input type="hidden" id="Miles" name="Miles" value="{{flightcode_details[1]}}">
+                <input type="hidden" id="Luggage" name="Luggage" value="{{flightcode_details[2]}}">
+                <select class="custom-select col-3" id="DepartureTime" name="DepartureTime">
+                    {% for x in flights_economy %}
+                    <option selected>{{x[0]}}</option>
+                    {% endfor %}
+                </select> <br> <br>
+                Price: {{flightcode_details[0]}}€ Luggage: {{flightcode_details[1]}}kg Miles: {{flightcode_details[2]}}mi
+                <br> <br>
+                <button class="btn btn-primary" type="submit" name="isbuy" value="0">Reserve Ticket</button>
+                <button class="btn btn-primary" type="submit" name="isbuy" value="1">Buy Ticket</button>
+            </form>
+            {% else %}
+                No flights for this seat class available.
+            {% endif %}
+        </div>
+        <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+            {% if flights_business %}
+            <form  action="ticketconfirmation" method="POST">
+                <input type="hidden" id="FCID" name="FCID" value="{{FCID}}">
+                <input type="hidden" id="type" name="type" value="B">
+                <input type="hidden" id="SeatUpgrade" name="SeatUpgrade" value="{{SeatUpgrade}}">
+                <input type="hidden" id="Price" name="Price" value="{{flightcode_details[3]}}">
+                <input type="hidden" id="Miles" name="Miles" value="{{flightcode_details[4]}}">
+                <input type="hidden" id="Luggage" name="Luggage" value="{{flightcode_details[5]}}">
+                <select class="custom-select col-3" id="DepartureTime" name="DepartureTime">
+                    {% for x in flights_business %}
+                    <option selected>{{x[0]}}</option>
+                    {% endfor %}
+                </select> <br> <br>
+                Price: {{flightcode_details[3]}}€ Luggage: {{flightcode_details[4]}}kg Miles: {{flightcode_details[5]}}mi
+                <br> <br>
+                <button class="btn btn-primary" type="submit" name="isbuy" value="0">Reserve Ticket</button>
+                <button class="btn btn-primary" type="submit" name="isbuy" value="1">Buy Ticket</button>
+            </form>
+            {% else %}
+                No flights for this seat class available.
+            {% endif %}
+        </div>
+        <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+            {% if flights_firstclass %}
+            <form action="ticketconfirmation" method="POST">
+                <input type="hidden" id="FCID" name="FCID" value="{{FCID}}">
+                <input type="hidden" id="type" name="type" value="F">
+                <input type="hidden" id="SeatUpgrade" name="SeatUpgrade" value="{{SeatUpgrade}}">
+                <input type="hidden" id="Price" name="Price" value="{{flightcode_details[6]}}">
+                <input type="hidden" id="Miles" name="Miles" value="{{flightcode_details[7]}}">
+                <input type="hidden" id="Luggage" name="Luggage" value="{{flightcode_details[8]}}">
+                <select class="custom-select col-3" id="DepartureTime" name="DepartureTime">
+                    {% for x in flights_firstclass %}
+                    <option selected>{{x[0]}}</option>
+                    {% endfor %}
+                </select> <br> <br>
+                Price: {{flightcode_details[6]}}€ Luggage: {{flightcode_details[7]}}kg Miles: {{flightcode_details[8]}}mi
+                <br> <br>
+                <button class="btn btn-primary" type="submit" name="isbuy" value="0">Reserve Ticket</button>
+                <button class="btn btn-primary" type="submit" name="isbuy" value="1">Buy Ticket</button>
+            </form>
+            {% else %}
+                No flights for this seat class available.
+            {% endif %}
+        </div>
+      </div>
+    </div>
+</div>
+<div class="form-col-2" style="padding: 2%;">
+    <a class="btn btn-primary my-2 my-sm-0" href="flights" >Back</a> 
+</div>
+{% endblock %}

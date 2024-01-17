@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block body %}
+<h1>Look through our assortment of wonderfully reasonably priced weekly scheduled flights!</h1>
+
+
+
+
+
+
+<div class="form-row" style="padding: 1%;" >
+  <div class="card col-md-2" style="height:19rem;" >
+      <form action="flights" method="post">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="formControlRange">From</label>
+            <select class="custom-select" id="From" name="From">
+              <option selected></option>
+              {% for x in SearchOptionsFROM %}
+                <option>{{x[0]}}</option>
+              {% endfor %}
+            </select>  
+          </div>
+          <div class="form-group col-md-6">
+            <label for="formControlRange">To</label>
+            <select class="custom-select" id="To" name="To">
+              <option selected></option>
+              {% for x in SearchOptionsTO %}
+                <option>{{x[0]}}</option>
+              {% endfor %}
+            </select> 
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="formControlRange">MinPrice in €</label>
+            <input type="text" class="form-control" id="MinPrice" name="MinPrice">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="formControlRange">MaxPrice in €</label>
+            <input type="text" class="form-control" id="MaxPrice" name="MaxPrice">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="formControlRange">MinTime</label>
+            <input type="time" class="form-control" id="MinTime" name="MinTime">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="formControlRange">MaxTime</label>
+            <input type="time" class="form-control" id="MaxTime" name="MaxTime">
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <button class="btn btn-primary" type="submit" name="Search" value="Search">Search</button>
+          </div>
+          <div class="form-group col-md-6">
+            <a class="btn btn-primary" href="flights">Reset Filter</a>
+          </div>
+        </div>
+      </form> 
+    </div>
+    <div class="form-group col-md-6">
+        <table class="table">
+            <thead class="thead-info">
+              <tr>
+                <th scope="col">From</th>
+                <th scope="col">To&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th scope="col">Price starting from&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th scope="col">Time</th>
+                <th scope="col">Flight Duration</th>
+                <th scope="col">Day&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th scope="col">GoToFlight</th>
+              </tr>
+            </thead>
+            <tbody>
+            {%for f in flightcodeList %}
+              <tr>
+                <td> 
+                  {{f[12]}}
+                </td>
+                <td> 
+                  {{f[13]}}
+                </td>
+                <td> 
+                  {{f[3]}}€
+                </td>
+                <td> 
+                  {{f[9]}}
+                </td>
+                <td> 
+                  {{f[-3]}}min
+                </td>
+                <td> 
+                  {% if f[10] == "0" %}
+                    Monday
+                  {% elif f[10] == "1" %}
+                    Tuesday
+                  {% elif f[10] == "2" %}
+                    Wednesday
+                  {% elif f[10] == "3" %}
+                    Thusday
+                  {% elif f[10] == "4" %}
+                    Friday
+                  {% elif f[10] == "5" %}
+                    Saturday
+                  {% else %}
+                    Sunday
+                  {% endif %}
+                </td>
+                <td><a class="btn btn-primary my-2 my-sm-0" href="flight={{f[0]}}" >Go to</a></td>
+              </tr>
+            </form>
+            {% endfor %}
+            </tbody>
+          </table>         
+  </div>
+</div>
+
+
+
+{% endblock %}

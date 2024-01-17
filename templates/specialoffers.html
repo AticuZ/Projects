@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block body %}
+<h1>Take advantage of our kind special offers to you and get great benefits.</h1>
+
+
+<div class="form-row" style="padding: 2%;" >
+  <div class="card col-md-2" style="height:19rem;" >
+    <form action="specialoffers" method="post">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="formControlRange">From</label>
+          <select class="custom-select" id="From" name="From">
+            <option selected></option>
+            {% for x in SearchOptionsFROM %}
+              <option>{{x[0]}}</option>
+            {% endfor %}
+          </select>  
+        </div>
+        <div class="form-group col-md-6">
+          <label for="formControlRange">To</label>
+          <select class="custom-select" id="To" name="To">
+            <option selected></option>
+            {% for x in SearchOptionsTO %}
+              <option>{{x[0]}}</option>
+            {% endfor %}
+          </select> 
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="formControlRange">MinPrice</label>
+          <input type="text" class="form-control" id="MinPrice" name="MinPrice">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="formControlRange">MaxPrice</label>
+          <input type="text" class="form-control" id="MaxPrice" name="MaxPrice">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="formControlRange">MinTime</label>
+          <input type="time" class="form-control" id="MinTime" name="MinTime">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="formControlRange">MaxTime</label>
+          <input type="time" class="form-control" id="MaxTime" name="MaxTime">
+        </div>
+      </div>        
+      <section style="margin-left: 20%;">
+        <button class="btn btn-primary" type="submit" name="Search" value="Search">Search</button>
+        <a class="btn btn-primary" href="specialoffers">Reset Filter</a>
+      </section>
+    </form> 
+    </div>
+    <div class="form-group col-md-6">
+        <table class="table">
+            <thead class="thead-info">
+              <tr>
+                <th scope="col"> From &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th scope="col"> To &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th scope="col"> Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                <th scope="col"> Flight Duration </th>
+                <th scope="col"> Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th scope="col"> Day &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                <th scope="col"> GoToFlight&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
+              </tr>
+            </thead>
+            <tbody>
+            {%for f in specialoffers %}
+            <form action="specialoffer={{f[6]}}" method="POST">
+              <tr>
+                <td> 
+                  {{f[0]}}
+                </td>
+                <td> 
+                  {{f[1]}}
+                </td>
+                <td> 
+                  {{f[2]}} €
+                </td>
+                <td> 
+                  {{f[4]}} min
+                </td>
+                <td> 
+                  {{f[3]}}
+                </td>
+                <td>
+                  {% if f[5] == "0" %}
+                    Monday
+                  {% elif f[5] == "1" %}
+                    Tuesday
+                  {% elif f[5] == "2" %}
+                    Wednesday
+                  {% elif f[5] == "3" %}
+                    Thusday
+                  {% elif f[5] == "4" %}
+                    Friday
+                  {% elif f[5] == "5" %}
+                    Saturday
+                  {% else %}
+                    Sunday
+                  {% endif %} 
+                </td>
+                <td>  
+                  <input type="hidden" id="OfferPriceMult" name="OfferPriceMult" value="{{f[7]}}">
+                  <input type="hidden" id="OfferLuggageMult" name="OfferLuggageMult" value="{{f[8]}}">
+                  <input type="hidden" id="OfferMilesMult" name="OfferMilesMult" value="{{f[9]}}">
+                  <input type="hidden" id="FCID" name="FCID" value="{{f[10]}}">
+                  <input type="hidden" id="SeatUpgrade" name="SeatUpgrade" value="{{f[11]}}">
+                  <button class="btn btn-primary my-2 my-sm-0" type="submit">Go To</button>
+                </td>
+              </tr>
+            </form>
+            {% endfor %}
+            </tbody>
+          </table>         
+  </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block body %}
+<h1>Dear{% if userTier=='B' %} bronze boy u get almost nothing. Just look at your benefits below.
+  {% elif userTier=='S' %} silver sonny thats what'chu get. You are almost there, keep on rolln' son. 
+  {% else %} great golden grandmaster. You are the pinnacle of existance and we worship you fervently. Below you you can see our humble offering to thee.
+  {% endif %} </h1> 
+<div style="padding: 1%;">
+  <table class="table" style="padding: 5%;">
+    <thead class="thead-info">
+      <tr>
+        <th scope="col">Benefits</th>
+        <th scope="col" style="text-align: center; vertical-align: middle;">Bronze</th>
+        <th scope="col" style="text-align: center; vertical-align: middle;">Silver</th>
+        <th scope="col" style="text-align: center; vertical-align: middle;">Gold</th>
+      </tr>
+      <tr>
+        <td> Collect Miles
+        <td style="text-align: center; vertical-align: middle;">&#10004</td>
+        <td style="text-align: center; vertical-align: middle;">&#10004</td>
+        <td style="text-align: center; vertical-align: middle;">&#10004</td>
+      </tr>
+      <tr>
+        <td> Get a Seat Upgrade
+        <td style="text-align: center; vertical-align: middle;">{% if tiersContent[0][4] == 1 %} &#10004 {% endif %}
+        </td>
+        <td style="text-align: center; vertical-align: middle;">{% if tiersContent[1][4] == 1 %} &#10004 {% endif %}
+        </td>
+        <td style="text-align: center; vertical-align: middle;">{% if tiersContent[2][4] == 1 %} &#10004 {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td> Ticket Prices
+        <td style="text-align: center; vertical-align: middle;">{{tiersContent[0][1]*100}}%</td>
+        <td style="text-align: center; vertical-align: middle;">{{tiersContent[1][1]*100}}%</td>
+        <td style="text-align: center; vertical-align: middle;">{{tiersContent[2][1]*100}}%</td>
+      </tr>
+      <tr>
+        <td> Luggage Capacity
+        <td style="text-align: center; vertical-align: middle;"> +{{tiersContent[0][2]*100-100}}% </td>
+        <td style="text-align: center; vertical-align: middle;">+{{tiersContent[1][2]*100-100}}% </td>
+        <td style="text-align: center; vertical-align: middle;">+{{tiersContent[2][2]*100-100}}% </td>
+      </tr>
+      <tr>
+        <td> Ticket Reservation in Advance
+        <td style="text-align: center; vertical-align: middle;">{{tiersContent[0][5]}} Days</td>
+        <td style="text-align: center; vertical-align: middle;">{{tiersContent[1][5]}} Days</td>
+        <td style="text-align: center; vertical-align: middle;">{{tiersContent[2][5]}} Days</td>
+      </tr>
+
+  </table>
+</div>
+{% endblock %}

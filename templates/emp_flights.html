@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block emp_body %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-primary" role="alert" style="padding: 20px;">
+            {{msg}}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="form-row" style="margin-left: 20px;" >
+    <div class="card col-md-2" style="height:19rem;" >
+        <form action="flights" method="post">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="formControlRange">From</label>
+              <select class="custom-select" id="From" name="From">
+                <option selected></option>
+                {% for x in SearchOptionsFROM %}
+                  <option>{{x[0]}}</option>
+                {% endfor %}
+              </select>  
+            </div>
+            <div class="form-group col-md-6">
+              <label for="formControlRange">To</label>
+              <select class="custom-select" id="To" name="To">
+                <option selected></option>
+                {% for x in SearchOptionsTO %}
+                  <option>{{x[0]}}</option>
+                {% endfor %}
+              </select> 
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="formControlRange">From</label>
+              <select class="custom-select" id="From" name="From">
+                <option selected></option>
+                {% for x in SearchOptionsFROM %}
+                  <option>{{x[0]}}</option>
+                {% endfor %}
+              </select>  
+            </div>
+            <div class="form-group col-md-6">
+              <label for="formControlRange">To</label>
+              <select class="custom-select" id="To" name="To">
+                <option selected></option>
+                {% for x in SearchOptionsTO %}
+                  <option>{{x[0]}}</option>
+                {% endfor %}
+              </select> 
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="formControlRange">MinPrice</label>
+              <input type="text" class="form-control" id="MinPrice" name="MinPrice">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="formControlRange">MaxPrice</label>
+              <input type="text" class="form-control" id="MaxPrice" name="MaxPrice">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="formControlRange">MinTime</label>
+              <input type="time" class="form-control" id="MinTime" name="MinTime">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="formControlRange">MaxTime</label>
+              <input type="time" class="form-control" id="MaxTime" name="MaxTime">
+            </div>
+          </div>
+    
+          <section style="margin-left: 20%;">
+            <button class="btn btn-primary" type="submit" name="Search" value="Search">Search</button>
+            <a class="btn btn-primary" href="flights">Reset Filter</a>
+          </section>
+        </form> 
+      </div>
+      <div class="form-group col-md-8">
+          <table class="table">
+              <thead class="thead-info">
+                <tr>
+                  <th scope="col">From</th>
+                  <th scope="col">To</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Time</th>
+                  <th scope="col">GoToFlight</th>
+                </tr>
+              </thead>
+              <tbody>
+                <form action="flights" method="POST">
+                    <tr>
+                        <td> 
+                            <input type="text" class="form-control" name="input" id="input" >
+                        </td>
+                        <td> 
+                            <input type="text" class="form-control" name="input" id="input" >
+                        </td>
+                        <td> 
+                            <input type="text" class="form-control" name="input" id="input" >
+                        </td>
+                        <td> 
+                            <input type="text" class="form-control" name="input" id="input" >
+                        </td>
+                        <td>
+                            <button class="btn btn-primary my-2 my-sm-0" type="submit" >Insert</button>
+                        </td>
+                    </tr>
+                </form>
+                {%for f in Flightcodetest %}
+                <form action="flight={{f[4]}}" method="POST">
+                    <tr>
+                        <td> 
+                            <input type="text" class="form-control" name="input" id="input" value="{{f[0]}}">
+                        </td>
+                        <td> 
+                            <input type="text" class="form-control" name="input" id="input" value="{{f[1]}}">
+                        </td>
+                        <td> 
+                            <input type="text" class="form-control" name="input" id="input" value="{{f[2]}}">
+                        </td>
+                        <td> 
+                            <input type="text" class="form-control" name="input" id="input" value="{{f[3]}}">
+                        </td>
+                        <td>
+                            <div class="card form-col-md">
+                            <button class="btn btn-primary my-2 my-sm-0" type="submit" >Edit</button>
+                            <a class="btn btn-primary my-2 my-sm-0" href="flights" >Reset</a>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                {% endfor %}
+              </tbody>
+            </table>         
+    </div>
+  </div>
+{% endblock %}

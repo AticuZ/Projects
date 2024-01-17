@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block emp_body %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for msg in messages %}
+<div class="alert alert-primary" role="alert" style="padding: 20px;">
+    {{msg}}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<h1>Manage our workhorses.</h1>
+
+
+<div class="form-row" style="padding: 2%;">
+    <div class="card col-md-2" style="height:14rem;" >
+        <form action="aircrafts" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                <label for="formControlRange">Aircraft</label>
+                <select class="custom-select" id="Aircraft" name="Aircraft">
+                    <option selected></option>
+                    {% for x in SearchOptionsAircraft %}
+                    <option>{{x[0]}}</option>
+                    {% endfor %}
+                </select> 
+                </div>
+            </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="formControlRange">MinCapacity in kg</label>
+              <input type="number" class="form-control" id="MinCapacity" name="MinCapacity">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="formControlRange">MaxCapacity in kg</label>
+              <input type="number" class="form-control" id="MaxCapacity" name="MaxCapacity">
+            </div>
+          </div>
+    
+          <section style="margin-left: 20%;">
+            <button class="btn btn-primary" type="submit" name="Search" value="Search">Search</button>
+            <a class="btn btn-primary" href="aircrafts">Reset Filter</a>
+          </section>
+        </form> 
+      </div>
+    <div class="form-group col-md-10">
+        <table class="table">
+            <thead class="thead-info">
+                <tr>
+                    <th scope="col">Aircraft name</th>
+                    <th scope="col">Seats Economy</th>
+                    <th scope="col">Seats Business</th>
+                    <th scope="col">Seats First Class</th>
+                    <th scope="col">Luggage Economy in kg</th>
+                    <th scope="col">Luggage Business in kg</th>
+                    <th scope="col">Luggage First Class in kg</th>
+                    <th scope="col">Max Luggage Capacity in kg</th>
+                    <th scope="col">Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                <form action="aircrafts" method="POST">
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" name="ACName" id="ACName">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Seats_E" id="Seats_E">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Seats_B" id="Seats_B">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Seats_F" id="Seats_F">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Luggage_E" id="Luggage_E">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Luggage_B" id="Luggage_B">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Luggage_F" id="Luggage_F">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="MaxLuggage" id="MaxLuggage">
+                        </td>
+                        <td>
+                            <input type="hidden" name="Search" value="Insert">
+                            <button class="btn btn-primary my-2 my-sm-0" type="submit">Insert</button>
+                        </td>
+                    </tr>
+                </form>
+                {%for a in aircraftList %}
+                <form action="aircrafts" method="POST">
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" name="ACName" id="ACName" value="{{a[1]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Seats_E" id="Seats_E" value="{{a[2]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Seats_B" id="Seats_B" value="{{a[3]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Seats_F" id="Seats_F" value="{{a[4]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Luggage_E" id="Luggage_E" value="{{a[5]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Luggage_B" id="Luggage_B" value="{{a[6]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="Luggage_F" id="Luggage_F" value="{{a[7]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="MaxLuggage" id="MaxLuggage" value="{{a[8]}}">
+                        </td>
+                        <td>
+                            <div class="card form-col-md">
+                                <input type="hidden" name="Search" value="Update">
+                                <button class="btn btn-primary my-2 my-sm-0" type="submit">Edit</button>
+                                <a class="btn btn-primary my-2 my-sm-0" href="aircrafts">Reset</a>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

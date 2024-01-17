@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block emp_body %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for msg in messages %}
+<div class="alert alert-primary" role="alert" style="padding: 20px;">
+    {{msg}}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<h1>Design a good looking but profitable offer.</h1>
+
+
+<div class="form-row" style="padding: 2%;">
+    <div class="card col-md-2" style="height:12rem;" >
+        <form action="specialoffers" method="post">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="formControlRange">FlightCode</label>
+              <select class="custom-select" id="FCID" name="FCID">
+                <option selected></option>
+                {% for x in SearchOptionsFCID %}
+                  <option>{{x[0]}}</option>
+                {% endfor %}
+              </select>  
+            </div>
+            <div class="form-group col-md-6">
+                <label for="formControlRange">Offer Name</label>
+                <select class="custom-select" id="OID" name="OID">
+                  <option selected></option>
+                  {% for x in SearchOptionsOID %}
+                    <option>{{x[0]}}</option>
+                  {% endfor %}
+                </select>  
+              </div>
+          </div> 
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-primary">
+            <input class="form-check-input" type="radio" id="status" name="status" value="all" checked>
+            All</label>
+            <label class="btn btn-primary">
+            <input class="form-check-input" type="radio" id="status" name="status" value="1">
+            Activated</label>
+            <label class="btn btn-primary">
+            <input class="form-check-input" type="radio" id="status" name="status" value="0">
+            Deactivated</label>
+          </div>  <br>  <br>  
+          <section style="margin-left: 20%;">
+            <button class="btn btn-primary" type="submit" name="Search" value="Search">Search</button>
+            <a class="btn btn-primary" href="specialoffers">Reset Filter</a>
+          </section>
+        </form> 
+    </div>
+    <div class="form-group col-md-10">
+        <table class="table">
+            <thead class="thead-info">
+                <tr>
+                    <th scope="col">Flight Code</th>
+                    <th scope="col">Offer Name</th>
+                    <th scope="col">PriceMultiplier</th>
+                    <th scope="col">LuggageMultiplier</th>
+                    <th scope="col">MilesMultiplier</th>
+                    <th scope="col">SeatUpgrade</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <form action="specialoffers" method="POST">
+                    <tr>
+                        <input type="hidden" class="form-control" name="ReservationTime" id="ReservationTime" value="0">
+                        <td>
+                            <input type="text" class="form-control" name="FCName" id="FCName">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="OName" id="OName">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="PriceMult" id="PriceMult">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="LuggageMult" id="LuggageMult">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="MilesMult" id="MilesMult">
+                        </td>
+                        <td>
+                            <label>Available
+                                <input type="radio"  name="SeatUpgrade" id="SeatUpgrade" value="1">
+                            </label> <br>
+                            <label>Unavailable
+                                <input type="radio"  name="SeatUpgrade" id="SeatUpgrade" value="0" checked>
+                            </label>
+                        </td>
+                        <td>
+                            <label>Active
+                                <input type="radio" aria-label="Active" name="Status" id="Status" value="1">
+                            </label> <br>
+                            <label>Inactive
+                                <input type="radio"  name="Status" id="Status" value="0" checked>
+                            </label> 
+                        </td>
+                        <td>
+                            <input type="hidden" name="Search" value="Insert">
+                            <button class="btn btn-primary my-2 my-sm-0" type="submit" name="FCID" value="">Insert</button>
+                        </td>
+                    </tr>
+                </form>
+                {%for o in specialOfferList %}
+                <form action="specialoffers" method="POST">
+                    <tr>
+                        
+                        <td>
+                            <input type="text" class="form-control" name="FCName" id="FCName" value="{{o[1]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="OName" id="OName" value="{{o[2]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="PriceMult" id="PriceMult" value="{{o[3]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="LuggageMult" id="LuggageMult"
+                                value="{{o[4]}}">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="MilesMult" id="MilesMult" value="{{o[5]}}">
+                        </td>
+                        <td>
+                            {% if o[6] == 1 %}
+                                <label>Available
+                                    <input type="radio"  name="SeatUpgrade" id="SeatUpgrade" value="1" checked>
+                                </label> <br>
+                                <label>Unavailable
+                                    <input type="radio"  name="SeatUpgrade" id="SeatUpgrade" value="0">
+                                </label>
+                            {% else %}
+                                <label>Available
+                                <input type="radio" name="SeatUpgrade" id="SeatUpgrade" value="1">
+                                </label> <br>
+                                <label>Unavailable
+                                    <input type="radio"  name="SeatUpgrade" id="SeatUpgrade" value="0" checked>
+                                </label> 
+                            {% endif %}
+                        </td>
+                            <input type="hidden" class="form-control" name="ReservationTime" id="ReservationTime" value="0">
+                        <td>
+                            {% if o[8] == 1 %}
+                                <label>Active
+                                    <input type="radio"  name="Status" id="Status" value="1" checked>
+                                </label> <br>
+                                <label>Inactive
+                                    <input type="radio"  name="Status" id="Status" value="0">
+                                </label>
+                            {% else %}
+                                <label>Active
+                                <input type="radio" aria-label="Active" name="Status" id="Status" value="1">
+                                </label> <br>
+                                <label>Inactive
+                                    <input type="radio"  name="Status" id="Status" value="0" checked>
+                                </label> 
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="card form-col-md">
+                                <input type="hidden" name="Search" value="Replace">
+                                <button class="btn btn-primary my-2 my-sm-0" type="submit"  name="FCID" value={{o[0]}}>Edit</button>
+                                <a class="btn btn-primary my-2 my-sm-0" href="specialoffers">Reset</a>
+                            </div>
+                        </td>
+                    </tr>
+                </form>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

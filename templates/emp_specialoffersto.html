@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block emp_body %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-primary" role="alert" style="padding: 20px;">
+            {{msg}}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<h1>Send offers to our gullible patrons.</h1>
+
+
+<form action="specialoffersto" method="POST">
+    <input type="hidden" id="To" name="To" value="User">
+    <table class="table">
+        <thead class="thead-info">
+          <tr>
+            <th scope="col-6">User Name</th>
+            <th scope="col-6">Special Offer</th>
+            <th scope="col-6">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" id="UID" name="UID" class="form-control"> </td>
+            <td>
+              <select class="custom-select" id="SpecialOffer" name="SpecialOffer">
+                {%for x in SpecialOfferOptions%}
+                  <option>{{x[0]}} , {{x[1]}}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td><button class="btn btn-primary" type="submit">Offer</button></td>
+          </tr>
+        </tbody>
+      </table> 
+</form>
+
+<form action="specialoffersto" method="POST">
+  <input type="hidden" id="To" name="To" value="Tier">
+  <table class="table col-12">
+    <thead class="thead-info">
+      <tr>
+        <th scope="col-6">Tier</th>
+        <th scope="col-6">Special Offer</th>
+        <th scope="col-6">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <select class="custom-select" id="Tier" name="Tier">
+            <option value="B">Bronze</option>
+            <option value="S">Silver</option>
+            <option value="G">Gold</option>
+          </select> 
+        </td>
+        <td>
+          <select class="custom-select" id="SpecialOffer" name="SpecialOffer">
+            {%for x in SpecialOfferOptions%}
+              <option>{{x[0]}} , {{x[1]}}</option>
+            {% endfor %}
+          </select> 
+        </td>
+        <td><button class="btn btn-primary" type="submit">Offer</button></td>
+      </tr>
+    </tbody>
+  </table> 
+</form>
+
+{% endblock %}

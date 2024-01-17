@@ -1,0 +1,7 @@
+HOW TO:
+
+-- 1. Setup DataBase
+	In sqlFiles:    -Run Trigger_CreateTable.sql
+			-Events_Procedures.sql
+-- 2. Run app
+	In DB: 		-Run app.py in Python

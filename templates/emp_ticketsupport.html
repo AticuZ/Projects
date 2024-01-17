@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+
+
+{% block emp_body %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-primary" role="alert" style="padding: 20px;">
+            {{msg}}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<h1>Don't give them money back under any circumstances.</h1>
+
+
+
+<div class="form-row" style="margin-left: 20px;" >
+    <div class="form-group col-md-6">
+        <table class="table">
+            <thead class="thead-info">
+              <tr>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">DepartureTime</th>
+                <th scope="col">Price</th>
+                <th scope="col">Status</th>
+                <th scope="col">Support</th>
+              </tr>
+            </thead>
+            <tbody>
+            {%for t in supportList %}
+            <form action="ticketsupport={{t[5]}}" method="POST">
+              <tr>
+                <td> 
+                  {{t[0]}}  
+                </td>
+                <td> 
+                  {{t[1]}}  
+                </td>
+                <td> 
+                  {{t[2]}}
+                </td>
+                <td> 
+                  {{t[3]}} € 
+                </td>
+                <td> 
+                    {% if t[4] == "PC" %}
+                      Waiting for review.
+                    {% elif t[4] == "PR" %}
+                      Waiting for review.
+                    {% elif t[4] == "F" %}
+                      Our Employees have processed your request. View the reply for more detail.
+                    {% else %}
+                      Something went wrong please try again.
+                    {% endif %}
+                </td>
+                
+                <td> 
+                    <input type="hidden" name="update" value="off">
+                    <input type="hidden" name="FCID" value="{{t[6]}}">
+                    <input type="hidden" name="status" value="{{t[4]}}">
+                    <input type="hidden" name="UID" value="{{t[7]}}">
+                    <input type="hidden" name="DepartureTime" value="{{t[2]}}">
+                    <button class="btn btn-primary" type="submit">View Support Ticket </button>
+                </td>
+            </form>
+            {% endfor %}
+            </tbody>
+          </table>         
+  </div>
+</div>
+
+
+
+{% endblock %}

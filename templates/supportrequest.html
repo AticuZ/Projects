@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-primary" role="alert" style="padding: 20px;">
+            {{msg}}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<h1>Hello you are in supportrequest</h1>
+
+
+
+<form action="supportrequest" method="POST" style="padding: 3%;">
+    <div class="input-group input-group-lg">
+        <div class="input-group-prepend">
+            <button class="btn btn-primary" type="submit">Confirm</button>
+
+        </div>
+        {%if CancelRequest == "on" %}
+            <input type="hidden" name="cancel" value="on">
+            <textarea class="form-control" aria-label="With textarea"name="content" placeholder="Why do you wanna cancel the flight?" required></textarea>
+        {% else %}
+            <input type="hidden" name="cancel" value="off">
+            <textarea class="form-control" aria-label="With textarea"name="content" placeholder="Why do you wanna reactivate the flight?" required></textarea>
+        {% endif %}
+    </div>
+    <input type="hidden" name="create" value="on">
+    <input type="hidden" name="FCID" value="{{FCID}}">
+    <input type="hidden" name="DepartureTime" value="{{DepartureTime}}">
+</form>   
+
+{% endblock %}

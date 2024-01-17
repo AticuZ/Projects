@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+{% block emp_body %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-primary" role="alert" style="padding: 20px;">
+            {{msg}}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+
+{% if StatusDisplay == "PC" %}
+    <h1>The Client is requesting a cancelation of their ticket.</h1>
+{% else %}
+    <h1>The Client is requesting a reactivation of their ticket.</h1>
+{% endif %}
+
+
+<form action="#" method="POST">
+    <br><br>
+    <b>&nbsp;&nbsp;Client complaint.</b>
+    <div class="input-group input-group-lg" style="padding: 5%;height: 20rem;">
+        <textarea class="form-control" aria-label="With textarea" name="content" readonly placeholder="{{content[0][0]}}" ></textarea>
+    </div>
+    <br>
+    <b>&nbsp;&nbsp;Employee reply:</b>
+    <div class="input-group input-group-lg" style="padding: 5%;height: 20rem;">
+        <textarea class="form-control" aria-label="With textarea" name="reply" placeholder="{{content[0][1]}}" required></textarea>
+    </div>
+
+    <input type="hidden" name="FCID" value="{{data[1]}}">
+    <input type="hidden" name="UID" value="{{data[0]}}">
+    <input type="hidden" name="DepartureTime" value="{{data[2]}}">
+    <input type="hidden" name="TID" value="{{data[3]}}">
+    <input type="hidden" name="update" value="on">
+    <input type="hidden" name="status" value="F">
+<div class="form-row">
+    &nbsp;&nbsp;&nbsp;
+    <button class="btn btn-primary" type="submit"> Decline Request </button>
+    &nbsp;&nbsp;
+</form>
+<form method="POST" action="ticketupdate">
+    <input type="hidden" name="FCID" value="{{data[1]}}">
+    <input type="hidden" name="UID" value="{{data[0]}}">
+    <input type="hidden" name="DepartureTime" value="{{data[2]}}">
+    <input type="hidden" name="TID" value="{{data[3]}}">
+    {% if StatusDisplay == "PC" %}
+        <input type="hidden" name="update" value="cancel">
+        <input type="hidden" name="reply" value="Your Ticket has been cancelled.">
+    {% else %}
+        <input type="hidden" name="update" value="reactivate">
+        <input type="hidden" name="reply" value="Your Ticket has been reactivated.">
+    {% endif %}
+    <button class="btn btn-primary" type="submit"> Accept Request </button>
+</form>
+&nbsp;&nbsp;
+<a class="btn btn-primary" href="ticketsupport">Back</a>
+</div>
+{% endblock %}

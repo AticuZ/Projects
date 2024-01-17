@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+
+
+{% block head %}
+
+{% endblock %}
+
+
+
+
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-primary" role="alert" style="padding: 20px;">
+            {{msg}}
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<h1>Here you can see your flighthistory, manage your flights, check in and ask for support if you need any. You won't get your money back.</h1>
+
+
+
+<div class="form-row" style="padding: 1%;" >
+  <div class="card col-md-2" style="height:23rem;" >
+    <form action="history" method="post">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="formControlRange">From</label>
+          <select class="custom-select" id="From" name="From">
+            <option selected></option>
+            {% for x in SearchOptionsFROM %}
+              <option>{{x[0]}}</option>
+            {% endfor %}
+          </select>  
+        </div>
+        <div class="form-group col-md-6">
+          <label for="formControlRange">To</label>
+          <select class="custom-select" id="To" name="To">
+            <option selected></option>
+            {% for x in SearchOptionsTO %}
+              <option>{{x[0]}}</option>
+            {% endfor %}
+          </select> 
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="formControlRange">MinPrice</label>
+          <input type="text" class="form-control" id="MinPrice" name="MinPrice">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="formControlRange">MaxPrice</label>
+          <input type="text" class="form-control" id="MaxPrice" name="MaxPrice">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="formControlRange">MinDate</label>
+          <input type="date" class="form-control" id="MinDate" name="MinDate">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="formControlRange">MaxDate</label>
+          <input type="date" class="form-control" id="MaxDate" name="MaxDate">
+        </div>
+      </div>        
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary">
+        <input class="form-check-input" type="radio" id="status" name="status" value="all" checked>
+        All</label>
+        <label class="btn btn-primary">
+        <input class="form-check-input" type="radio" id="status" name="status" value="B">
+        Booked</label>
+        <label class="btn btn-primary">
+        <input class="form-check-input" type="radio" id="status" name="status" value="R">
+        Reserved</label>
+        <label class="btn btn-primary">
+        <input class="form-check-input" type="radio" id="status" name="status" value="F">
+        Finished</label>
+        <label class="btn btn-primary">
+        <input class="form-check-input" type="radio" id="status" name="status" value="C">
+        Checked In</label>
+      </div>
+      <br><br>
+      <section style="margin-left: 20%;">
+        <button class="btn btn-primary" type="submit" name="Search" value="Search">Search</button>
+        <a class="btn btn-primary" href="history">Reset Filter</a>
+      </section>
+    </form> 
+    </div>
+    <div class="form-group col-md-8">
+        <table class="table">
+            <thead class="thead-info">
+              <tr>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">DepartureTime</th>
+                <th scope="col">Price</th>
+                <th scope="col">Earned Miles</th>
+                <th scope="col">Seat Number</th>
+                <th scope="col">Baggage</th>
+                <th scope="col">Type</th>
+                <th scope="col">Status</th>
+                <th scope="col">Support</th>
+              </tr>
+            </thead>
+            <tbody>
+            {%for t in ticketList %}
+              <tr>
+                <td> 
+                  {{t[0]}}  
+                </td>
+                <td> 
+                  {{t[1]}}  
+                </td>
+                <td> 
+                  {{t[2]}}
+                </td>
+                <td> 
+                  {{t[3]}} € 
+                </td>
+                <td> 
+                  {{t[4]}} mi 
+                </td>
+                <td> 
+                  {{t[5]}}  
+                </td>
+                <td> 
+                  {{t[6]}} kg  
+                </td>
+                <td> 
+                  {% if t[7] == "E" %}
+                    Economy
+                  {% elif t[7] == "B" %}
+                      Business
+                  {% else %}
+                    First Class
+                  {% endif %}
+                </td>
+                <td> 
+                  {% if t[8] == "D" %}
+                    The ticket has been canceled.
+                  {% elif t[8] == "B" %}
+
+                    <!--Check if checkin is available-->
+                    {% if t[10] <= 1 %}
+                      <form action="ticketupdate" method="POST">
+                        <input type="hidden" name="update" value="checkin">
+                        <input type="hidden" name="FCID" value="{{t[9]}}">
+                        <input type="hidden" name="UID" value="{{UID}}">
+                        <input type="hidden" name="DepartureTime" value="{{t[2]}}">
+                        <button class="btn btn-primary" type="submit">Check In</button>
+                      </form>
+                    {% else %}
+                      Your flight is booked. Waiting for Checkin.
+                    {% endif %}
+
+                  {% elif t[8] == "R" %}
+                    A seat is reserved for you.
+                    <form action="ticketupdate" method="POST">
+                      <input type="hidden" name="update" value="pay">
+                      <input type="hidden" name="FCID" value="{{t[9]}}">
+                      <input type="hidden" name="UID" value="{{UID}}">
+                      <input type="hidden" name="DepartureTime" value="{{t[2]}}">
+                      <button class="btn btn-primary" type="submit">Pay</button>
+                    </form>
+                  {% elif t[8] == "C" %}
+                    You are Checked in.
+                  {% else %}
+                    The flight reached its destination.
+                  {% endif %} 
+                </td>
+                <td> 
+                  <form action="supportrequest" method="POST">
+                    <input type="hidden" name="FCID" value="{{t[9]}}">
+                    <input type="hidden" name="DepartureTime" value="{{t[2]}}">
+                    <input type="hidden" name="create" value="off">
+                    {% if t[8] == "D" %}
+                      {%if t[10] > 0 %}
+                        <input type="hidden" name="cancel" value="off">
+                        <button class="btn btn-primary" type="submit">Request reactivation</button>
+                      {% else %}
+                        Reactivation impossible.
+                      {% endif %}
+                    {% else %}
+                      <input type="hidden" name="cancel" value="on">
+                      <button class="btn btn-primary" type="submit">Request cancelation</button>
+                    {% endif %}
+                  
+                  </form>
+                </td>
+            {% endfor %}
+            </tbody>
+          </table>         
+  </div>
+</div>
+
+
+
+{% endblock %}
